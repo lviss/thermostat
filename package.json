@@ -1,0 +1,23 @@
+{
+  "name": "thermostat",
+  "version": "1.0.0",
+  "description": "Webpage for controlling a heater and air conditioner",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec **/*.spec.js"
+  },
+  "author": "lviss",
+  "license": "ISC",
+  "dependencies": {
+    "ds18x20": "^0.2.0",
+    "express": "^4.14.0",
+    "jsonfile": "^2.4.0",
+    "lodash": "^4.17.4",
+    "rpi-gpio": "^0.7.0",
+    "socket.io": "^1.7.2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "sinon": "^1.17.7"
+  }
+}
