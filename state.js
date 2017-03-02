@@ -1,5 +1,6 @@
 var config = require('./config');
 var temperature_sensor = require('ds18x20');
+var gpio = require('rpi-gpio');
 
 var state = {
   max_cycles_per_hour: config.max_cycles_per_hour, 
@@ -15,9 +16,9 @@ var state = {
     'off'
   ],
   relay_pin_config: {
-    heat: 1,
-    cool: 2,
-    fan : 3
+    heat: 11,
+    cool: 12,
+    fan : 13
   },
   relays: {
     heat: false,
@@ -33,6 +34,9 @@ var state = {
     return this.cycle_history.length >= this.max_cycles_per_hour && (new Date) - this.cycle_history[this.max_cycles_per_hour - 1].timestamp < one_hour;
   },
   set_gpio: function(heat, cool, fan) {
+    gpio.write(this.relay_pin_config.heat, heat);
+    gpio.write(this.relay_pin_config.cool, cool);
+    gpio.write(this.relay_pin_config.fan, fan);
     this.relays.heat = heat;
     this.relays.cool = cool;
     this.relays.fan = fan;

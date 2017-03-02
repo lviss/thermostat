@@ -14,7 +14,8 @@
     "jsonfile": "^2.4.0",
     "lodash": "^4.17.4",
     "rpi-gpio": "^0.7.0",
-    "socket.io": "^1.7.2"
+    "socket.io": "^1.7.2",
+    "socket.io-client": "^1.7.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",

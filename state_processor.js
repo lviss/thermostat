@@ -15,7 +15,7 @@ var process = function(state, io) {
       if (state.desired_temperature >= actual_temperature + state.range) {
         if (!state.have_reached_maximum_cycles(state)) {
           // turn on heater
-          state.set_gpio(true, false, true);
+          state.set_gpio(true, false, false);
         }
       }
     }

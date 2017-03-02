@@ -2,13 +2,28 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var jsonfile = require('jsonfile');
+var gpio = require('rpi-gpio');
 var _ = require('lodash');
 var state_processor = require('./state_processor');
 var config = require('./config');
 var state = require('./state');
 
+// set initial relay states
+gpio.setup(state.relay_pin_config.heat, gpio.DIR_OUT, function() {
+  gpio.write(state.relay_pin_config.heat, state.relays.heat);
+});
+gpio.setup(state.relay_pin_config.cool, gpio.DIR_OUT, function() {
+  gpio.write(state.relay_pin_config.cool, state.relays.cool);
+});
+gpio.setup(state.relay_pin_config.fan, gpio.DIR_OUT, function() {
+  gpio.write(state.relay_pin_config.fan, state.relays.fan);
+});
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
+});
+app.get('/socket.io.min.js', function(req, res){
+  res.sendFile(__dirname + '/node_modules/socket.io-client/dist/socket.io.min.js');
 });
 
 state.emit = function() {
