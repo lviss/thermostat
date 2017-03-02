@@ -30,3 +30,6 @@ To run unit tests:
 npm install -g mocha
 npm test
 ```
+
+Screenshot:
+![Screenshot](https://cloud.githubusercontent.com/assets/25114893/21953372/c4d391de-d9e9-11e6-8cfc-c46a8373e2d8.png "Screenshot")
