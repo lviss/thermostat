@@ -1,4 +1,4 @@
-var process = function(state, io) {
+var process = function(state) {
   var actual_temperature = state.get_actual_temperature();
   state.actual_temperature = actual_temperature;
   if (actual_temperature != state.last_temperature) {

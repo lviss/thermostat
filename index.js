@@ -19,6 +19,35 @@ gpio.setup(state.relay_pin_config.fan, gpio.DIR_OUT, function() {
   gpio.write(state.relay_pin_config.fan, state.relays.fan);
 });
 
+// set up mqtt client
+var mqtt = require('mqtt')
+var mqttclient  = mqtt.connect('mqtt://server');
+
+mqttclient.on('connect', function() {
+  mqttclient.subscribe('devices/thermostat/mode/set');
+  mqttclient.subscribe('devices/thermostat/desired_temperature/inc');
+  mqttclient.subscribe('devices/thermostat/desired_temperature/dec');
+});
+
+mqttclient.on('message', function (topic, message) {
+  // message is Buffer
+  //console.log(topic);
+  //console.log(message.toString());
+  if (topic == 'devices/thermostat/mode/set') {
+    var mode = message.toString();
+    if (state.modes.indexOf(mode) >= 0) {
+      state.mode = mode;
+      state.emit();
+    }
+  } else if (topic == 'devices/thermostat/desired_temperature/inc') {
+    state.desired_temperature++;
+    state.emit();
+  } else if (topic == 'devices/thermostat/desired_temperature/dec') {
+    state.desired_temperature--
+    state.emit();
+  }
+});
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
@@ -28,6 +57,7 @@ app.get('/socket.io.min.js', function(req, res){
 
 state.emit = function() {
   io.emit('state', state);
+  mqttclient.publish('devices/thermostat/get', JSON.stringify(state), { retain: true });
 };
 
 io.on('connection', function(socket){
@@ -49,7 +79,7 @@ io.on('connection', function(socket){
 // loop which watches the config and changes the relays accordingly
 function check_state() {
   setTimeout(function() {
-    state_processor.process(state, io);
+    state_processor.process(state);
     check_state(); // schedule this to happen again
   }, 5000);
 };
