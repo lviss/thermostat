@@ -1,5 +1,5 @@
 # thermostat
-[nodejs](https://github.com/nodejs/node "node"), [socket.io](https://github.com/socketio/socket.io "socket.io"), [angular](https://github.com/angular/angular.js "Angular") site for a raspberry pi controlling heat/ac via gpio
+Headless client for a raspberry pi controlling heat/ac via MQTT & gpio
 
 Parts list:
 - [raspberry pi zero](https://www.adafruit.com/product/2885) - $5, sdcard, power cable
@@ -30,6 +30,3 @@ To run unit tests:
 npm install -g mocha
 npm test
 ```
-
-Screenshot:
-![Screenshot](https://cloud.githubusercontent.com/assets/25114893/21953372/c4d391de-d9e9-11e6-8cfc-c46a8373e2d8.png "Screenshot")
