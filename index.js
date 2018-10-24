@@ -5,6 +5,7 @@ var state_processor = require('./state_processor');
 var config = require('./config');
 var state = require('./state');
 
+
 // set initial relay states
 gpio.setup(state.relay_pin_config.heat, gpio.DIR_OUT, function() {
   gpio.write(state.relay_pin_config.heat, state.relays.heat);
@@ -18,35 +19,35 @@ gpio.setup(state.relay_pin_config.fan, gpio.DIR_OUT, function() {
 
 // set up mqtt client
 var mqtt = require('mqtt')
-var mqttclient  = mqtt.connect('mqtt://server');
+var mqttclient  = mqtt.connect(config.mqtt.host);
 
 mqttclient.on('connect', function() {
-  mqttclient.subscribe('devices/thermostat/mode/set');
-  mqttclient.subscribe('devices/thermostat/desired_temperature/inc');
-  mqttclient.subscribe('devices/thermostat/desired_temperature/dec');
+  mqttclient.subscribe(config.mqtt.topic + '/mode/set');
+  mqttclient.subscribe(config.mqtt.topic + '/desired_temperature/inc');
+  mqttclient.subscribe(config.mqtt.topic + '/desired_temperature/dec');
 });
 
 mqttclient.on('message', function (topic, message) {
   // message is Buffer
   //console.log(topic);
   //console.log(message.toString());
-  if (topic == 'devices/thermostat/mode/set') {
+  if (topic == config.mqtt.topic + '/mode/set') {
     var mode = message.toString();
     if (state.modes.indexOf(mode) >= 0) {
       state.mode = mode;
       state.emit();
     }
-  } else if (topic == 'devices/thermostat/desired_temperature/inc') {
+  } else if (topic == config.mqtt.topic + '/desired_temperature/inc') {
     state.desired_temperature++;
     state.emit();
-  } else if (topic == 'devices/thermostat/desired_temperature/dec') {
+  } else if (topic == config.mqtt.topic + '/desired_temperature/dec') {
     state.desired_temperature--
     state.emit();
   }
 });
 
 state.emit = function() {
-  mqttclient.publish('devices/thermostat/get', JSON.stringify(state), { retain: true });
+  mqttclient.publish(config.mqtt.topic + '/get', JSON.stringify(state), { retain: true });
 };
 
 // loop which watches the config and changes the relays accordingly
