@@ -20,6 +20,12 @@ config.max_cycles_per_hour = 6;
   the temperature reaches 82 degrees.
 */
 config.range = 2;
+/*
+  this setting allows you to calibrate the temperature
+  sensor. If the sensor reads 80 and this is set to -5, the
+  software will read the temperature as 75.
+*/
+config.temperature_sensor_calibration = 0;
 
 /*
   MQTT connection information
