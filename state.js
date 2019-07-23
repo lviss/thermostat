@@ -27,7 +27,7 @@ var state = {
   },
   get_actual_temperature: function() {
     var sensor_ids = temperature_sensor.list();
-    return parseFloat((temperature_sensor.get(sensor_ids[0]) * 9 / 5 + 32).toFixed(1));
+    return parseFloat((temperature_sensor.get(sensor_ids[0]) * 9 / 5 + 32).toFixed(1)) + config.temperature_sensor_calibration;
   },
   have_reached_maximum_cycles: function(state) {
     var one_hour = 60 * 60 * 1000; /* ms */
