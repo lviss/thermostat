@@ -1,0 +1,7 @@
+# Per-repo no-mistakes overrides.
+
+# This repo has no CI configured: there are no .github/workflows on either
+# master or mqtt_headless (confirmed via git ls-tree), so no-mistakes' CI
+# step has nothing to observe and waits until timeout. Disable CI
+# validation until a workflow exists.
+no_ci: true
